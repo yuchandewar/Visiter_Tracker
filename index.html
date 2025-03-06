@@ -74,7 +74,7 @@ navigator.geolocation.watchPosition((position) => {
 const savePositionToMongoDB = async (latitude, longitude , userId) => {
     console.log('Saving position:', latitude, longitude , userId);
     try {
-        const response = await fetch('http://localhost:3000/positions', {
+        const response = await fetch('https://visiter-tracker.onrender.com/positions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
