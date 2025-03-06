@@ -63,7 +63,18 @@ fetch('https://visiter-tracker.onrender.com/positions')
     .then(data => {
         data.forEach(position => {
             const { latitude, longitude } = position;
-            L.marker([latitude, longitude]).addTo(map);
+            const marker = L.marker([latitude, longitude]).addTo(map);
+            marker.on('click', () => {
+                const currentPos = liveposition[liveposition.length - 1];
+                const distance = map.distance(currentPos, [latitude, longitude]).toFixed(2);
+                const popupContent = `
+                    <div>
+                        <p>Distance from current position: ${distance/1000}Km</p>
+                        <button onclick="window.open('https://www.google.com/maps/dir/?api=1&origin=${currentPos[0]},${currentPos[1]}&destination=${latitude},${longitude}', '_blank')">Track on Google Maps</button>
+                    </div>
+                `;
+                marker.bindPopup(popupContent).openPopup();
+            });
         });
     })
     .catch(error => console.error('Error fetching positions:', error));
